@@ -11,7 +11,7 @@ const HolidayArticleSchema = new Schema({
     },
     // img: {
     //     type: String,
-    //     data:  Schema.Types.Mixed,
+    //     data:  Schema.Types.Mixed
     // },
 
     link: {

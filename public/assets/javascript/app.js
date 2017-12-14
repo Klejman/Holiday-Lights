@@ -32,7 +32,7 @@ router.get('/holidayarticles', function (req, res) {
             }
             else {
                 var hbsObject = {holidayarticles: doc};
-                res.render('index', hbsObject);
+                res.render('index.handlebars', hbsObject);
             }
         });
 
