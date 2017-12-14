@@ -74,7 +74,8 @@ h5 {
 }
 
 .collapsible-header,
-input.btn {
+input.btn,
+.badge{
     background: linear-gradient(124deg, #4996ff, #a8dcff, #d3ced0, #426dcd);
 }
 

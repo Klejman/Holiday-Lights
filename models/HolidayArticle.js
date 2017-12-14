@@ -4,11 +4,15 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 
-const SiteVisitorsCommentsSchema = new Schema({
+const HolidayArticleSchema = new Schema({
     title: {
         type: String,
         required: true
     },
+    // img: {
+    //     type: String,
+    //     data:  Schema.Types.Mixed,
+    // },
 
     link: {
         type: String,
@@ -27,12 +31,12 @@ const SiteVisitorsCommentsSchema = new Schema({
 
     comments: [{
         type: Schema.Types.ObjectId,
-        ref: 'HolidayNews'
+        ref: 'Comments'
     }]
 
 });
 
-const SiteVisitorsComments = mongoose.model("SiteVisitorsComments", SiteVisitorsCommentsSchema);
+const HolidayArticle = mongoose.model("HolidayArticle", HolidayArticleSchema, "holidayarticles");
 
 // Export the Model
-module.exports = SiteVisitorsComments;
+module.exports = HolidayArticle;

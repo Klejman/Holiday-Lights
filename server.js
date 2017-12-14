@@ -3,7 +3,7 @@ const exphbs = require('express-handlebars');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 const PORT = process.env.PORT || 3000;
-const moment = require("moment");
+
 
 const logger = require('morgan');
 const request = require('request');
@@ -45,7 +45,7 @@ mongoose.connect("mongodb://localhost/week18Jollyifier", {
 
 // Routes
 /*
-Project Requirements
+HW Requirements
 Headline (result.title)- the title of the article
 Summary (result.summary)- a short summary of the article
 URL (result.link) - the url to the original article
@@ -53,47 +53,49 @@ URL (result.link) - the url to the original article
 // A GET route for scraping the website
 app.get("/scrape", function(req, res) {
     // First, we grab the body of the html with request
-    request.get("http://www.usnews.com/").then(function(response) {
+    request.get("https://www.usnews.com/topics/subjects/holidays/").then(function(response) {
         const $ = cheerio.load(response.data);
 
         $("div .flex-media-content").each(function(i, element) {
-            // Save an empty result object
             const result = {};
-
             // Add the text and href of every link, and save them as properties of the result object
-            result.title = $(this)
-                .children.children("a")
-                .text();
-            result.link = $(this)
-                .children.children("a")
-                .attr("href");
+            result.title = $(this).children("h3")
+                .children("a")
+                .text().trim();
+            // result.image = $(this).parent("div .flex-media-figure .bar-normal .bar-looser-for-medium-up")
+            //     .children("a").children("picture:eq(0)")
+            result.link = "https://www.usnews.com/topics/subjects/holidays" + $(this)
+                .children("h3")
+                .children("a")
+                .attr("href").trim();
             result.summary = $(this)
-                .children.children("p .block-flush")
-                .text();
+                .children("div .show-for-medium-up").children("p:eq(1)")
+                .text().trim();
+
 
             // Create a new Holiday News "Article" using the `result` object built from scraping
-            db.HolidayNews
+            db.HolidayArticle
                 .create(result)
-                .then(function(dbHolidayNews) {
+                .then(function(dbHolidayArticle) {
                     // If we were able to successfully scrape and save an Holiday News Article, send a message to the client
+                    console.log(dbHolidayArticle);
                     res.send("Scrape Complete");
                 })
                 .catch(function(err) {
-                    // If an error occurred, send it to the client
-                    res.json(err);
+                    res.send(err);
                 });
         });
     });
 });
 
 // Route for getting all Holiday News Articles from the db
-app.get("/holidaynewss", function(req, res) {
+app.get("/holidayarticles", function(req, res) {
     // Grab every document in the Articles collection
-    db.HolidayNews
+    db.HolidayArticle
         .find({})
-        .then(function(dbHolidayNews) {
-            // If we were able to successfully find Articles, send them back to the client
-            res.json(dbHolidayNews);
+        .then(function(dbHolidayArticle) {
+            // If we were able to successfully find Article(s), send them back to the client
+            res.json(dbHolidayArticle);
         })
         .catch(function(err) {
             // If an error occurred, send it to the client
@@ -102,15 +104,14 @@ app.get("/holidaynewss", function(req, res) {
 });
 
 // Route for grabbing a specific Holiday News Article by id, populate it with it's note
-app.get("/holidaynewss/:id", function(req, res) {
+app.get("/holidayarticles/:id", function(req, res) {
     // Using the id passed in the id parameter, prepare a query that finds the matching one in our db...
-    db.HolidayNews
+    db.HolidayArticle
         .findOne({ _id: req.params.id })
         // ..and populate all of the comments associated with it
-        .populate("sitevisitorscomments")
-        .then(function(dbHolidayNews) {
-            // If we were able to successfully find a Holiday News Article with the given id, send it back to the client
-            res.json(dbHolidayNews);
+        .populate("comments")
+        .then(function(dbHolidayArticle) {
+            res.send(dbHolidayArticle);
         })
         .catch(function(err) {
             // If an error occurred, send it to the client
@@ -119,19 +120,16 @@ app.get("/holidaynewss/:id", function(req, res) {
 });
 
 // Route for saving/updating an Holiday News Article's associated Site Visitor Comments
-app.post("/holidaynewss/:id", function(req, res) {
+app.post("/holidayarticles/:id", function(req, res) {
     // Create a new note and pass the req.body to the entry
-    db.SiteVisitorsComments
+    db.Comment
         .create(req.body)
-        .then(function(dbSiteVisitorsComments) {
-            // If a Note was created successfully, find one Article with an `_id` equal to `req.params.id`. Update the Article to be associated with the new Note
-            // { new: true } tells the query that we want it to return the updated User -- it returns the original by default
-            // Since our mongoose query returns a promise, we can chain another `.then` which receives the result of the query
-            return db.HolidayNews.findOneAndUpdate({ _id: req.params.id }, { note: dbSiteVisitorsComments._id }, { new: true });
+        .then(function(dbComment) {
+            return db.HolidayArticle.findOneAndUpdate({ _id: req.params.id }, { note: dbComment._id }, { new: true });
         })
-        .then(function(dbHolidayNews) {
+        .then(function(dbHolidayArticle) {
             // If we were able to successfully update an Article, send it back to the client
-            res.json(dbHolidayNews);
+            res.json(dbHolidayArticle);
         })
         .catch(function(err) {
             // If an error occurred, send it to the client

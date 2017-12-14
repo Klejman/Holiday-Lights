@@ -1,6 +1,6 @@
 // Exporting an object containing models
 
 module.exports = {
-    HolidayNews: require("./HolidayNews.js"),
-    SiteVisitorsComments: require("./SiteVisitorsComments.js")
+    HolidayArticle: require("./HolidayArticle.js"),
+    Comment: require("./Comment.js")
 };
