@@ -287,25 +287,40 @@
 <!--</div>-->
 
 
-<!--</main>-->
+</main>
 
-<!--// Prettify the employee start-->
-<!--var currentTime = moment.unix(empStart).format("MM/DD/YY");-->
+<script type="javascript/text" >
 
-<!--// Calculate the months worked using hardcore math-->
-<!--// To calculate the months worked-->
-<!--var empMonths = moment().diff(moment.unix(empStart, "X"), "months");-->
-<!--console.log(empMonths);-->
+var oneDay = (;
+var duration = moment.duration(time * 1000, 'milliseconds');
+var interval = 1000;
 
-<!--// Calculate the total billed rate-->
-<!--var empBilled = empMonths * empRate;-->
-<!--console.log(empBilled);-->
+setInterval(function(){
+  duration = moment.duration(duration.asMilliseconds() - interval, 'milliseconds');
+  //show how many hours, minutes and seconds are left
+  $('.countdown').text(moment(duration.asMilliseconds()).format('h:mm:ss'));
+}, interval);
+</script>
 
-<!--// Add each train's data into the table-->
-<!--$("#employee-table > tbody").append("<tr><td>" + empName + "</td><td>" + empRole + "</td><td>" +-->
-<!--empStartPretty + "</td><td>" + empMonths + "</td><td>" + empRate + "</td><td>" + empBilled + "</td></tr>");-->
-<!--});-->
 
+// Prettify the employee start
+var currentTime = moment.unix(empStart).format("MM/DD/YY");
+
+// Calculate the months worked using hardcore math
+// To calculate the months worked
+var empMonths = moment().diff(moment.unix(empStart, "X"), "months");
+console.log(empMonths);
+
+// Calculate the total billed rate
+var empBilled = empMonths * empRate;
+console.log(empBilled);
+
+// Add each train's data into the table
+$("#employee-table > tbody").append("<tr><td>" + empName + "</td><td>" + empRole + "</td><td>" +
+empStartPretty + "</td><td>" + empMonths + "</td><td>" + empRate + "</td><td>" + empBilled + "</td></tr>");
+});
+
+var today =
 
 <!-- Footer -->
 <footer class="page-footer blue-grey darken-2">

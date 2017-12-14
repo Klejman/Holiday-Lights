@@ -5,6 +5,8 @@ const mongoose = require('mongoose');
 const PORT = process.env.PORT || 3000;
 const router = express.Router();
 
+const csp = require('helmet-csp');
+
 
 const logger = require('morgan');
 const request = require('request');
@@ -18,8 +20,11 @@ const Comment = require("./models/Comment.js");
 const dotenv = require('dotenv');
 dotenv.load();
 
+
+
 // Initialize Express
 const app = express();
+app.use(router);
 
 // Configure middleware
 
@@ -29,6 +34,16 @@ app.use(logger("dev"));
 app.use(bodyParser.urlencoded({ extended: false }));
 // Use express.static to serve the public folder as a static directory
 app.use(express.static("public"));
+//CSP font error in terminal
+app.use(csp({
+    directives: {
+        fontSrc: ["'self'", "http://fonts.gstatic.com"],
+        defaultSrc: ["'self'"],
+        styleSrc: ["'self'"]
+    }
+}));
+
+
 
 // Express-Handlebars
 
@@ -43,6 +58,12 @@ app.set('view engine', 'handlebars');
 mongoose.Promise = Promise;
 mongoose.connect("mongodb://localhost/db", {
     useMongoClient: true
+});
+
+app
+router.get('/', function (req, res){
+    console.log('hello');
+    res.redirect('/scrape');
 });
 
 

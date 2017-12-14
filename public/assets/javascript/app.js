@@ -5,9 +5,7 @@ const path = require('path');
 const request = require('request'); // for web-scraping
 const cheerio = require('cheerio');
 
-router.get('/', function (req, res){
-    res.redirect('/scrape');
-});
+
 
 // Require all models
 const HolidayArticle = require("./models/HolidayArticle.js");
