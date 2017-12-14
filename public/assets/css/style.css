@@ -1,20 +1,97 @@
 /*Sticky Footer*/
 body {
+    font-family: 'Special Elite', cursive;
     display: flex;
     min-height: 100vh;
     flex-direction: column;
 
-    /*Add Background Texture*/
-    /*background-image: url('../images/newspaper-texture.jpg');*/
+
+    /*Holiday Themed Background*/
+    background-image: url('../images/winterWeather.gif');
+    background-size: cover;
+
+
+    color: #000;
+    text-shadow: -1px -1px 0 #FFF,
+    1px -1px 0 #FFF,
+    -1px 1px 0 #FFF,
+    1px 1px 0 #FFF
+
 }
 
 main {
     flex: 1 0 auto;
-    position: relative;
+    font-family: 'Special Elite', cursive;
 }
 
-footer{
-    position: absolute;
-    bottom: 0;
+a.brand-logo,
+nav ul a {
+    padding-left: 10px;
+    color: #000;
+    text-shadow: -1px -1px 0 #FFF,
+    1px -1px 0 #FFF,
+    -1px 1px 0 #FFF,
+    1px 1px 0 #FFF
 
+}
+
+.footnews img{
+    height: 70px;
+}
+
+.navbar-material,
+.nav-wrapper,
+.brand-logo img {
+    height: 55px;
+    padding-bottom:5px;
+
+}
+
+h1,
+h5,
+footer
+{
+    font-family: 'Oleo Script', cursive;
+    font-size: 16px;
+    text-align: center;
+    color: #000;
+    text-shadow: -1px -1px 0 #FFF,
+    1px -1px 0 #FFF,
+    -1px 1px 0 #FFF,
+    1px 1px 0 #FFF
+}
+
+footer {
+    font-size: 22px;
+}
+
+h1 {
+    font-size: 45px;
+}
+
+h5 {
+    font-size: 28px;
+}
+
+.collapsible-header,
+input.btn {
+    background: linear-gradient(124deg, #4996ff, #a8dcff, #d3ced0, #426dcd);
+}
+
+ul.collapsible {
+    background: transparent;
+}
+
+span {
+    padding-left: 20px;
+}
+
+#veryLow {
+    margin-bottom: 55px;
+}
+.countdown {
+    margin-bottom:20px;
+    height: 120%;
+    padding-bottom: 20px;
+    text-align: left;
 }

@@ -2,84 +2,348 @@
 <html>
 <head>
     <!-- Tab Title -->
-    <title>Paper Scraper</title>
-    <!-- Tag Icon -->
-    <link rel="icon" href="./assets/images/NLCVGriswaldLights.jpeg"/>
-    <!--&lt;!&ndash;Tab Image&ndash;&gt;-->
-    <!--<link rel="icon" href="./assets/img/Pokeball.PNG"/>-->
-    <!-- View Port Size -->
+    <title>Scraper News</title>
+    <!-- Tab Image -->
+    <link rel="icon" href="../assets/images/logo.png"/>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- Materialize - Compiled and minified CSS -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.8/css/materialize.min.css">
     <!-- Materialize - Icons -->
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <!--Google Fonts-->
+    <link href="https://fonts.googleapis.com/css?family=Special+Elite" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Oleo+Script" rel="stylesheet">
     <!-- Custom CSS -->
-    <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="stylesheet" href="../assets/css/style.css"/>
 </head>
 
 <body>
 
+
 <!-- Fixed Nav Bar -->
+
+
 <div class="navbar-fixed">
     <nav>
-        <div class="nav-wrapper grey darken-3">
-            <a href="/" class="brand-logo"><i class="material-icons">loop</i> Holiday Lights</a>
-            <a href="" data-activates="mobile-demo" class="button-collapse"><i class="material-icons">Menu</i></a>
+        <div class="nav-wrapper blue-grey">
+            <a href="news" class="brand-logo"><span><img src="../assets/images/logo.png"/></span>Scraper News
+            </a>
+            <a href="" data-activates="mobile-demo" class="button-collapse"><i class="material-icons">menu</i></a>
             <ul class="right hide-on-med-and-down">
-                <li><a href="#" target="_new"></a></li>
-                <li><a href="#" target="_new">Github Repo</a></li>
+                <!--<li><a href="#">SEASON OF GIVING</a></li>-->
+                <!--<li><a href="#">BELIEVE IN MAGIC</a></li>-->
+                <!--<li><a href="#">SMILE</a></li>-->
             </ul>
         </div>
     </nav>
 </div>
 
 <!-- For Mobile Nav Bar -->
-<ul class="side-nav darken-3" id="mobile-demo">
-    <li><a href="#" target="_blank"></a></li>
-    <li><a href="#" target="_new">Github Repo</a></li>
+<ul class="side-nav" id="mobile-demo">
+    <li><a href="#">Local</a></li>
+    <li><a href="#">National</a></li>
+    <li><a href="#">International</a></li>
 </ul>
 
 
-<!-- Page Content -->
 <main>
 
     <!-- Site Info Container -->
     <div class="container">
-        <ul class="collection with-header">
-            <li class="collection-header grey lighten-2"><h4><b>Season's Greetings !</b></h4></li>
-            <li class="collection-item">"The most enduring traditions of the season are best enjoyed in the warm embrace of kith and kin. Thith tree is a thymbol of the thspirit of the Grithwold family Chrithmath." - Clark Griswald </li>
-            <li class="collection-item"><div>Click <i class="material-icons">loop</i> See Next</div></li>
-            <li class="collection-item"><div>Click <i class="material-icons">language</i> </div></li>
-            <li class="collection-item"><div>Click <i class="material-icons">comment</i> Add Comment.</div></li>
-            <li class="collection-item"><div>Click <i class="material-icons">thumbs_up_down</i> User Ratings.</div></li>
-        </ul>
+        <header>
+            <h1>Season's Greetings!</h1>
+        </header>
+
     </div>
 
-    <div class="container">
-        {{{body}}}
-    </div>
 
+    <div class="row">
+        <div class="col s12 m3"><h5 class="light">Article Title </h5></div>
+        <div class="col s12 m9">
+            <ul class="collapsible" data-collapsible="expandable">
+                <li class="active">
+                    <div class="collapsible-header active">VIEW ARTICLE SUMMARY</div>
+                    <div class="collapsible-body"><span>"The most enduring traditions of the season are best enjoyed in the warm embrace
+                        of kith and kin. Thith tree is a thymbol of the thspirit of the Grithwold family Chrithmath." - Clark
+                       Griswald</span>
+                    </div>
+                </li>
+                <li class="">
+                    <div class="collapsible-header">START/JOIN A CONVERSATION</div>
+                    <div class="collapsible-body">
+                        <form action="user/comment" method="post">
+
+                            <!-- Site Visitor's Name  -->
+                            <div class="row">
+                                <div class="input-field col s2"></div>
+                                <div class="input-field col s8">
+                                    <input id="author_name" type="text" class="validate">
+                                    <label for="author_name">Name:</label>
+                                </div>
+                            </div>
+
+                            <!-- Comment Input -->
+                            <div class="row">
+                                <div class="input-field col s2"></div>
+                                <div class="input-field col s8">
+                                    <textarea id="comment_box" class="materialize-textarea"></textarea>
+                                    <label for="comment_box">Comment(s):</label>
+                                </div>
+                            </div>
+
+                            <!-- Submit Button -->
+                            <div class="row">
+                                <div class="input-field col s2">
+                                </div>
+                                <div class="input-field col s8 center">
+                                    <input class="btn" type="submit" value="Submit">
+                                </div>
+                            </div>
+
+                        </form>
+                    </div>
+                </li>
+                <li>
+                    <div class="collapsible-header"><i class="material-icons">ac_unit</i>VIEW COMMENTS</div>
+                    <div class="collapsible-body">
+
+                        <ul class="collection">
+
+                            <li class="collection-item">
+                                Name:
+                                <br>
+                                Comment(s):
+                            </li>
+
+                            <li class="collection-item">
+                                Name:
+                                <br>
+                                Comment(s):
+                            </li>
+
+                            <li class="collection-item">
+                                Name:
+                                <br>
+                                Comment(s):
+                            </li>
+
+                        </ul>
+
+
+                    </div>
+                </li>
+
+            </ul>
+
+            <div class="row">
+                <div class="col s12 m3"><h5 class="light">Article Title </h5></div>
+                <div class="col s12 m9">
+                    <ul class="collapsible" data-collapsible="expandable">
+                        <li class="active">
+                            <div class="collapsible-header active">VIEW ARTICLE SUMMARY</div>
+                            <div class="collapsible-body"><span>"Where do you think you're going? Nobody's leaving. Nobody's walking out on this fun, old-fashioned family Christmas. No, no. We're all in this together. This is a full-blown, four-alarm holiday emergency here. We're gonna press on, and we're gonna have the hap, hap, happiest Christmas since Bing Crosby tap-danced with Danny f&%*ing Kaye. And when Santa squeezes his fat white ass down that chimney tonight, he's gonna find the jolliest bunch of a**holes this side of the nuthouse.</span>
+                            </div>
+                        </li>
+                        <li class="">
+                            <div class="collapsible-header">START/JOIN A CONVERSATION</div>
+                            <div class="collapsible-body">
+                                <form action="user/comment" method="post">
+
+                                    <!-- Site Visitor's Name  -->
+                                    <div class="row">
+                                        <div class="input-field col s2"></div>
+                                        <div class="input-field col s8">
+                                            <input id="author_name" type="text" class="validate">
+                                            <label for="author_name">Name:</label>
+                                        </div>
+                                    </div>
+
+                                    <!-- Comment Input -->
+                                    <div class="row">
+                                        <div class="input-field col s2"></div>
+                                        <div class="input-field col s8">
+                                            <textarea id="comment_box" class="materialize-textarea"></textarea>
+                                            <label for="comment_box">Comment(s):</label>
+                                        </div>
+                                    </div>
+
+                                    <!-- Submit Button -->
+                                    <div class="row">
+                                        <div class="input-field col s2">
+                                        </div>
+                                        <div class="input-field col s8 center">
+                                            <input class="btn" type="submit" value="Submit">
+                                        </div>
+                                    </div>
+
+                                </form>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="collapsible-header"><i class="material-icons">ac_unit</i>VIEW COMMENTS</div>
+                            <div class="collapsible-body">
+
+                                <ul class="collection">
+
+                                    <li class="collection-item">
+                                        Name:
+                                        <br>
+                                        Comment(s):
+                                    </li>
+
+                                    <li class="collection-item">
+                                        Name:
+                                        <br>
+                                        Comment(s):
+                                    </li>
+
+                                    <li class="collection-item">
+                                        Name:
+                                        <br>
+                                        Comment(s):
+                                    </li>
+
+                                </ul>
+
+
+                            </div>
+                        </li>
+
+                    </ul>
+
+
+                    <div class="row">
+                        <div class="col s12 m3"><h5 class="light">Article Title </h5></div>
+                        <div class="col s12 m9">
+                            <ul class="collapsible" data-collapsible="expandable">
+                                <li class="active">
+                                    <div class="collapsible-header active">VIEW ARTICLE SUMMARY</div>
+                                    <div class="collapsible-body"><span>"You couldn't hear a dump truck driving through a nitroglycerin plant." - Uncle Lewis</span>
+                                    </div>
+                                </li>
+                                <li class="">
+                                    <div class="collapsible-header">START/JOIN A CONVERSATION</div>
+                                    <div class="collapsible-body">
+                                        <form action="user/comment" method="post">
+
+                                            <!-- Site Visitor's Name  -->
+                                            <div class="row">
+                                                <div class="input-field col s2"></div>
+                                                <div class="input-field col s8">
+                                                    <input id="author_name" type="text" class="validate">
+                                                    <label for="author_name">Name:</label>
+                                                </div>
+                                            </div>
+
+                                            <!-- Comment Input -->
+                                            <div class="row">
+                                                <div class="input-field col s2"></div>
+                                                <div class="input-field col s8">
+                                                    <textarea id="comment_box" class="materialize-textarea"></textarea>
+                                                    <label for="comment_box">Comment(s):</label>
+                                                </div>
+                                            </div>
+
+                                            <!-- Submit Button -->
+                                            <div class="row">
+                                                <div class="input-field col s2">
+                                                </div>
+                                                <div class="input-field col s8 center">
+                                                    <input class="btn" type="submit" value="Submit">
+                                                </div>
+                                            </div>
+
+                                        </form>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="collapsible-header"><i class="material-icons">ac_unit</i>VIEW COMMENTS
+                                    </div>
+                                    <div class="collapsible-body">
+
+                                        <ul class="collection">
+
+                                            <li class="collection-item">
+                                                Name:
+                                                <br>
+                                                Comment(s):
+                                            </li>
+
+                                            <li class="collection-item">
+                                                Name:
+                                                <br>
+                                                Comment(s):
+                                            </li>
+
+                                            <li class="collection-item">
+                                                Name:
+                                                <br>
+                                                Comment(s):
+                                            </li>
+
+                                        </ul>
+
+                                    </div>
+                                </li>
+
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </main>
 
 
+<!--</div>-->
+
+
+<!--</main>-->
+
+<!--// Prettify the employee start-->
+<!--var currentTime = moment.unix(empStart).format("MM/DD/YY");-->
+
+<!--// Calculate the months worked using hardcore math-->
+<!--// To calculate the months worked-->
+<!--var empMonths = moment().diff(moment.unix(empStart, "X"), "months");-->
+<!--console.log(empMonths);-->
+
+<!--// Calculate the total billed rate-->
+<!--var empBilled = empMonths * empRate;-->
+<!--console.log(empBilled);-->
+
+<!--// Add each train's data into the table-->
+<!--$("#employee-table > tbody").append("<tr><td>" + empName + "</td><td>" + empRole + "</td><td>" +-->
+<!--empStartPretty + "</td><td>" + empMonths + "</td><td>" + empRate + "</td><td>" + empBilled + "</td></tr>");-->
+<!--});-->
+
+
 <!-- Footer -->
-<footer class="page-footer grey darken-3">
-    <div class="footer-copyright">
-        <div class="container">
-            <a class="grey-text text-lighten-4" href="#"></a>
+<footer class="page-footer blue-grey darken-2">
+    <div class="row">
+        <div class="col l4 s6"></div>
+    </div>
+
+    <div class="footer-copyright blue-grey">
+        <div class="row">
+            <div class="col l4 s12 countdown"><a href="#" class="brand-logo"><img
+                    src="../assets/images/NLCVGriswaldLights.jpeg"/><span></span>Days Until Christmas...</a>
+            </div>
         </div>
     </div>
 </footer>
 
 
-
 <!-- Link in jQuery CDN -->
-<script src="https://code.jquery.com/jquery-3.1.1.min.js" integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>
+<script src="https://code.jquery.com/jquery-3.1.1.min.js"
+        integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>
 
 <!-- Materialize - Compiled and minified JavaScript -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.8/js/materialize.min.js"></script>
 
-<script type="text/javascript" src="assets/javascript/app.js"></script>
+<!-- Basic Page JavaScript for Repsonsiveness -->
+<script type="text/javascript" src="../public/assets/javascript/app.js"></script>
 
 </body>
 
