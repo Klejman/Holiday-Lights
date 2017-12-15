@@ -1,5 +1,5 @@
 {
-  "name": "scraper news",
+  "name": "scraper_news",
   "version": "1.0.0",
   "description": "holiday articles trending this season",
   "main": "server.js",
@@ -32,6 +32,7 @@
     "mongoose": "^4.13.7",
     "morgan": "^1.9.0",
     "nodemon": "^1.12.7",
-    "request": "^2.83.0"
+    "request": "^2.83.0",
+    "request-promise": "^4.2.2"
   }
 }

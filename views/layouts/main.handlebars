@@ -5,16 +5,28 @@
     <title>Scraper News</title>
     <!-- Tab Image -->
     <link rel="icon" href="assets/images/logo.png"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
     <meta http-equiv="Content-Security-Policy" content="default-src 'none'"/>
     <!-- Materialize - Compiled and minified CSS -->
     <link rel="stylesheet" href="assets/css/materialize.css" />
     <!-- Materialize - Icons -->
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet"/>
     <!--Google Fonts-->
-    <link href="https://fonts.googleapis.com/css?family=Oleo+Script|Special+Elite" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Oleo+Script|Special+Elite" rel="stylesheet"/>
     <!-- Custom CSS -->
     <link rel="stylesheet" href="assets/css/style.css"/>
+    <!-- Link in jQuery CDN -->
+    <script src="https://code.jquery.com/jquery-3.1.1.min.js"
+            integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>
+
+    <!--Moment CDN CHRISTMAS COUNTDOWN-->
+    <!--<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.19.4/locale/af.js"></script>-->
+
+    <!-- Materialize - Compiled and minified JavaScript -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.8/js/materialize.min.js"></script>
+
+    <!-- Basic Page JavaScript for Repsonsiveness -->
+    <script type="text/javascript" src="../assets/javascript/app.js"></script>
 </head>
 
 <body>
@@ -47,33 +59,10 @@
     <!-- Render All Articles -->
     <div class="container">
         {{{body}}}
+        <a href="/holidayarticles">Articles</a>
     </div>
 
 </main>
-
-
-<!--</div>-->
-
-
-<!--</main>-->
-
-<!--// Prettify the employee start-->
-<!--var currentTime = moment.unix(empStart).format("MM/DD/YY");-->
-
-<!--// Calculate the months worked using hardcore math-->
-<!--// To calculate the months worked-->
-<!--var empMonths = moment().diff(moment.unix(empStart, "X"), "months");-->
-<!--console.log(empMonths);-->
-
-<!--// Calculate the total billed rate-->
-<!--var empBilled = empMonths * empRate;-->
-<!--console.log(empBilled);-->
-
-<!--// Add each train's data into the table-->
-<!--$("#employee-table > tbody").append("<tr><td>" + empName + "</td><td>" + empRole + "</td><td>" +-->
-<!--empStartPretty + "</td><td>" + empMonths + "</td><td>" + empRate + "</td><td>" + empBilled + "</td></tr>");-->
-<!--});-->
-
 
 <!-- Footer -->
 <footer class="page-footer blue-grey darken-2">
@@ -88,19 +77,6 @@
     </div>
     </div>
 </footer>
-
-<!-- Link in jQuery CDN -->
-<script src="https://code.jquery.com/jquery-3.1.1.min.js"
-        integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>
-
-<!--Moment CDN CHRISTMAS COUNTDOWN-->
-<!--<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.19.4/locale/af.js"></script>-->
-
-<!-- Materialize - Compiled and minified JavaScript -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.8/js/materialize.min.js"></script>
-
-<!-- Basic Page JavaScript for Repsonsiveness -->
-<script type="text/javascript" src="../assets/javascript/app.js"></script>
 
 </body>
 

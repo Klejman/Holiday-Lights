@@ -4,23 +4,16 @@ const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 const PORT = process.env.PORT || 3000;
 const router = express.Router();
+const path = require('path');
 
 const csp = require('helmet-csp');
-
 
 const logger = require('morgan');
 const request = require('request');
 const cheerio = require('cheerio');
 
 // Require all models
-// const db = require("./models");
-const HolidayArticle = require("./models/HolidayArticle.js");
-const Comment = require("./models/Comment.js");
-
-const dotenv = require('dotenv');
-dotenv.load();
-
-
+const db = require("./models");
 
 // Initialize Express
 const app = express();
@@ -34,20 +27,22 @@ app.use(logger("dev"));
 app.use(bodyParser.urlencoded({ extended: false }));
 // Use express.static to serve the public folder as a static directory
 app.use(express.static("public"));
-//CSP font error in terminal
+// CSP error resolution
 app.use(csp({
     directives: {
         fontSrc: ["'self'", "http://fonts.gstatic.com"],
         defaultSrc: ["'self'"],
-        styleSrc: ["'self'"]
-    }
+        styleSrc: ["'self'"],
+        imgSrc: ['img.com', 'data:'],
+    },
+    browserSniff: false
 }));
 
 
 
 // Express-Handlebars
 
-//handlebars setup
+app.set('views', path.join(__dirname, 'views'));
 app.engine('handlebars', exphbs({defaultLayout: 'main'}));
 //This will render handlebars files when res.render is called.
 app.set('view engine', 'handlebars');
@@ -56,81 +51,78 @@ app.set('view engine', 'handlebars');
 // Set mongoose to leverage built in JavaScript ES6 Promises
 // Connect to the Mongo DB
 mongoose.Promise = Promise;
-mongoose.connect("mongodb://localhost/db", {
+mongoose.connect("mongodb://localhost/scrapenews", {
     useMongoClient: true
 });
 
-app
-router.get('/', function (req, res){
-    console.log('hello');
-    res.redirect('/scrape');
-});
+// store scraped content
+let scrapernews = {};
+//Test
+// console.log('hello');
+// res.redirect('/scrape');
 
+// / Routes
+// Includes the articles, headline, summary & URL
 
-// Routes
-/*
-HW Requirements
-Headline (result.title)- the title of the article
-Summary (result.summary)- a short summary of the article
-URL (result.link) - the url to the original article
- */
 // A GET route for scraping the website
 router.get("/scrape", function(req, res) {
     // First, we grab the body of the html with request
-    request.get("https://www.usnews.com/topics/subjects/holidays/").then(function(response) {
-        const $ = cheerio.load(response.data);
+    request.get("https://www.parents.com/holiday/christmas/traditions/great-holiday-stories-for-the-family", function(err, res, html) {
+        const $ = cheerio.load(html);
+        console.log(html);
+        $(".restOfTheSlide").each( function(i, element) {
+            scrapernews.title = $(element).find("h2").text();
+            scrapernews.link = $(element).children("div").find("a").attr("href").trim();
+            scrapernews.summary = $(element).children("div").find("p").text();
 
-        $("div .flex-media-content").each(function(i, element) {
-            console.log(i && element);
-            const result = {};
-            // Add the text and href of every link, and save them as properties of the result object
-            result.title = $(this).children("h3")
-                .children("a")
-                .text().trim();
-            // result.image = $(this).parent("div .flex-media-figure .bar-normal .bar-looser-for-medium-up")
-            //     .children("a").children("picture:eq(0)")
-            result.link = "https://www.usnews.com/topics/subjects/holidays" + $(this)
-                .children("h3")
-                .children("a")
-                .attr("href").trim();
-            result.summary = $(this)
-                .children("div .show-for-medium-up").children("p:eq(1)")
-                .text().trim();
-
+            console.log(scrapernews);
 
             // Create a new Holiday News "Article" using the `result` object built from scraping
             db.HolidayArticle
-                .create(result)
+                .create(scrapernews)
                 .then(function(dbHolidayArticle) {
                     // If we were able to successfully scrape and save an Holiday News Article, send a message to the client
                     console.log(dbHolidayArticle);
-                    res.send("Scrape Complete");
+                    res.send("active scrape in place");
                 })
                 .catch(function(err) {
-                    res.send(err);
+                    console.log(err);
                 });
         });
     });
 });
 
-// Route for getting all Holiday News Articles from the db
-router.get("/holidayarticles", function(req, res) {
-    // Grab every document in the Articles collection
-    db.HolidayArticle
-        .find({})
-        .then(function(dbHolidayArticle) {
-            // If we were able to successfully find Article(s), send them back to the client
-            res.json(dbHolidayArticle);
-        })
-        .catch(function(err) {
-            // If an error occurred, send it to the client
-            res.json(err);
-        });
+
+router.get('/', function (req, res) {
+    db.HolidayArticle.find({})
+        .then(function (holidayarticles) {
+            // res.json(articles);
+            console.log(holidayarticles);
+            res.render("index", {scrapernews: holidayarticles});
+        }).catch(function (err) {
+        if (err) {
+            console.log(err);
+        }
+    })
 });
 
-// Route for grabbing a specific Holiday News Article by id, populate it with it's note
+router.get('/holidayarticles', function (req, res) {
+
+    db.HolidayArticle.find().sort({_id: -1})
+        .populate('comments')
+        .exec(function (err, doc) {
+            if (err) {
+                console.log(err);
+            }
+            else {
+                const hbsObject = {holidayarticles: doc};
+                res.render('index', hbsObject);
+            }
+        });
+
+});
+
 router.get("/holidayarticles/:id", function(req, res) {
-    // Using the id passed in the id parameter, prepare a query that finds the matching one in our db...
     db.HolidayArticle
         .findOne({ _id: req.params.id })
         // ..and populate all of the comments associated with it
@@ -150,14 +142,12 @@ router.post("/holidayarticles/:id", function(req, res) {
     db.Comment
         .create(req.body)
         .then(function(dbComment) {
-            return db.HolidayArticle.findOneAndUpdate({ _id: req.params.id }, { note: dbComment._id }, { new: true });
+            return db.HolidayArticle.findOneAndUpdate({ _id: req.params.id }, {$addToSet:{ comment: dbComment._id }}, { new: true });
         })
         .then(function(dbHolidayArticle) {
-            // If we were able to successfully update an Article, send it back to the client
             res.json(dbHolidayArticle);
         })
         .catch(function(err) {
-            // If an error occurred, send it to the client
             res.json(err);
         });
 });

@@ -9,10 +9,6 @@ const HolidayArticleSchema = new Schema({
         type: String,
         required: true
     },
-    // img: {
-    //     type: String,
-    //     data:  Schema.Types.Mixed
-    // },
 
     link: {
         type: String,
@@ -31,7 +27,7 @@ const HolidayArticleSchema = new Schema({
 
     comments: [{
         type: Schema.Types.ObjectId,
-        ref: 'Comments'
+        ref: "Comments"
     }]
 
 });
