@@ -30,10 +30,11 @@ app.use(express.static("public"));
 // CSP error resolution
 app.use(csp({
     directives: {
-        fontSrc: ["'self'", "http://fonts.gstatic.com"],
+        fontSrc: ["'self'", 'https://fonts.gstatic.com/'],
         defaultSrc: ["'self'"],
+        scriptSrc: ["'self'"],
         styleSrc: ["'self'"],
-        imgSrc: ['img.com', 'data:'],
+        imgSrc: ["'self'"]
     },
     browserSniff: false
 }));
@@ -77,7 +78,9 @@ router.get("/scrape", function(req, res) {
 
             console.log(scrapernews);
 
-            // Create a new Holiday News "Article" using the `result` object built from scraping
+
+
+                        // Create a new Holiday News "Article" using the `result` object built from scraping
             db.HolidayArticle
                 .create(scrapernews)
                 .then(function(dbHolidayArticle) {
@@ -135,6 +138,7 @@ router.get("/holidayarticles/:id", function(req, res) {
             res.json(err);
         });
 });
+
 
 // Route for saving/updating an Holiday News Article's associated Site Visitor Comments
 router.post("/holidayarticles/:id", function(req, res) {

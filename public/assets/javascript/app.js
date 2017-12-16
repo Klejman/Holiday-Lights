@@ -1,54 +1,58 @@
+$(function () {
 
-$("#scrape").on("click", function () {
-    $.ajax({
-        method: "GET",
-        url: "/scrape"
-    }).then(function (data) {
+    const baseURL = window.location.origin;
+
+    //Add scraped content render on page
+    $("#scrape").on("click", function () {
         $.ajax({
             method: "GET",
-            url: "/"
+            url: "/scrape"
         }).then(function (data) {
-            console.log("yay");
+            console.lgo(data);
+            $.ajax({
+                method: "GET",
+                url: "/"
+            }).then(function (data) {
+                console.log(data);
+            })
         })
-    })
-});
+    });
 
-
-$(document).on("click", ".add-button", function (event) {
-    event.preventDefault();
-    const thisId = $(this).attr("data-id");
-
-    $.ajax({
-        url: '/add/comment/' + thisId,
-        type: 'POST',
-        data: {body: $("#comment_section").val("")}
+//Add Comment
+    $(".add-button").on("click", function () {
+        const HolidayArticleId = $(this).attr("data-id");
+        // Get Form Data by Id
+        const addInput = "form-add-" + HolidayArticleId;
+        const display = $('#' + addInput);
+        $.ajax({
+            url: baseURL + '/add/comment/' + HolidayArticleId,
+            type: 'POST',
+            data: display.serialize()
         }).then(function (data) {
             console.log(data);
         });
-    $("#comment_section").val("");
-});
+        $("#comment_section").val("");
+    });
 
 
-$(document).on('click', '.remove-button', function () {
-    // Get _id of comment to be deleted
-    let thisId = $(this).attr("data-id");
+    $(document).on('click', '.remove-button', function () {
+        // Get _id of comment to be deleted
+        let thisId = $(this).attr("data-id");
+       $.ajax({
+            url: baseURL + '/remove/comment/' + thisId,
+            type: 'POST'
+        })
+            .then(function (data) {
+                console.log(data);
+                // Refresh the Window after the call is done
+                location.reload();
+            });
 
-    let baseURL = window.location.origin;
+        // Prevent Default
+        return false;
 
-    $.ajax({
-        url: baseURL + '/remove/comment/' + thisId,
-        type: 'POST'
-    })
-        .then(function (data) {
-            console.log(data);
-            // Refresh the Window after the call is done
-            location.reload();
-        });
-
-    // Prevent Default
-    return false;
-
-});
+    });
+})
 
 
 // Export Router to Server.js

@@ -6,22 +6,22 @@
         <div class="col s12 m9">
             <ul class="collapsible" data-collapsible="expandable">
                 <li class="active">
-                    <div class="collapsible-header active">VIEW ARTICLE SUMMARY</div>
+                    <div class="collapsible-header active">SUMMARY</div>
                     <div class="collapsible-body"><span>{{summary}}</span>
                         <br><br>
-                        <p>View<a href="{{link}}" target="_blank">full article</a></p>
+                        <p>View<a href="{{link}}" target="_blank"> full article </a></p>
                     </div>
                 </li>
                 <li>
-                    <div class="collapsible-header">START/JOIN A CONVERSATION</div>
+                    <div class="collapsible-header">START/JOIN THE CONVERSATION</div>
                     <div class="collapsible-body">
-                        <form id="form-input-{{id}}" action="add/comment/{{_id}}" method="post">
+                        <form id="form-add-{{_id}}" action="add/comment/{{_id}}" method="post">
                             <!-- Comment Input -->
                             <div class="row">
                                 <div class="input-field col s2"></div>
                                 <div class="input-field col s8">
                                     <textarea id="comment_section" class="materialize-textarea"></textarea>
-                                    <label for="comment_section">Share Comment(s):</label>
+                                    <label for="comment_section"></label>
                                 </div>
                             </div>
 
@@ -48,7 +48,7 @@
                                 {{#each comments}}
 
                                         <span class="badge">
-                  <form action="remove/comment/{{_id}}" method="post">
+                  <form id="form-delete-{{_id}}"action="remove/comment/{{_id}}" method="post">
                     <input class="btn remove-button" data-id="{{_id}}" type="submit" value="Delete">
                   </form>
                 </span>
@@ -70,3 +70,4 @@
 
             </ul>
 {{/each}}
+    <script src="./assets/javascript/app.js"></script>
