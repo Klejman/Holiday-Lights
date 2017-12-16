@@ -4,15 +4,15 @@
     <!-- Tab Title -->
     <title>Holiday Stories</title>
     <!-- Tab Image -->
-    <link rel="icon" href="../assets/images/logo.png"/>
+    <link rel="icon" href="assets/images/logo.png"/>
     <meta name="viewport" content="width=device-width, initial-scale=1"/>
-    <meta http-equiv="Content-Security-Policy" content="default-src 'none'"/>
+    <!--<meta http-equiv="Content-Security-Policy" content="default-src 'none'"/>-->
     <!--Google -->
     <link href="https://fonts.googleapis.com/css?family=Material+Icons|Oleo+Script|Special+Elite" rel="stylesheet"/>
     <!--Materialize -->
-    <link rel="stylesheet" href="../assets/css/materialize.css"/>
+    <link rel="stylesheet" href="assets/css/materialize.css"/>
     <!-- Custom CSS -->
-    <link rel="stylesheet" href="../assets/css/style.css"/>
+    <link rel="stylesheet" href="assets/css/style.css"/>
     <!-- Link in jQuery CDN -->
     <script src="https://code.jquery.com/jquery-3.1.1.min.js"
             integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>
@@ -23,7 +23,7 @@
     <!-- Materialize - Compiled and minified JavaScript -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.8/js/materialize.min.js"></script>
 
-    <script type="text/javascript" src="../assets/javascript/app.js"></script>
+    <script type="text/javascript" src="./assets/javascript/app.js"></script>
 </head>
 
 <body>
@@ -35,7 +35,7 @@
 <div class="navbar-fixed">
     <nav>
         <div class="nav-wrapper blue-grey">
-            <a href="" class="brand-logo"><span><img src="../assets/images/logo.png"/></span>Holiday Stories
+            <a href="" class="brand-logo"><span><img src="./assets/images/logo.png"/></span>
             </a>
         </div>
     </nav>
@@ -56,7 +56,6 @@
     <!-- Render All Articles -->
     <div class="container">
         {{{body}}}
-        <a href="/holidayarticles">Articles</a>
     </div>
 
 </main>
@@ -69,11 +68,13 @@
 
     <div class="footer-copyright blue-grey">
         <div class="col l4 s12 countdown"><a href="#" class="brand-logo"><img
-                src="../assets/images/NLCVGriswaldLights.jpeg"/><span></span>Days Until Christmas...</a>
+                src="./assets/images/NLCVGriswaldLights.jpeg"/><span></span></a>
         </div>
     </div>
-    </div>
 </footer>
+
+
+<script src="./assets/javascript/app.js"></script>
 
 </body>
 

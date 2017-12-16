@@ -1,5 +1,5 @@
 {{#each scrapernews}}
-    <div class="row">
+    <div class="container">
         <div class="col s12 m3"><h5 class="light">{{title}}</h5>
             <p>{{updated}}</p>
         </div>
@@ -47,14 +47,14 @@
                             <ul class="collection">
                                 {{#each comments}}
 
-                                        <span class="badge">
-                  <form id="form-delete-{{_id}}"action="remove/comment/{{_id}}" method="post">
+                                    <span class="badge">
+                  <form id="form-delete-{{_id}}" action="remove/comment/{{_id}}" method="post">
                     <input class="btn remove-button" data-id="{{_id}}" type="submit" value="Delete">
                   </form>
                 </span>
-                                        <br>
+                                    <br>
 
-                                        {{content}}
+                                    {{content}}
 
 
                                 {{/each}}
@@ -69,5 +69,7 @@
                 </li>
 
             </ul>
+        </div>
+    </div>
 {{/each}}
-    <script src="./assets/javascript/app.js"></script>
+

@@ -1,17 +1,18 @@
 
-
+html {
+    /*Holiday Themed Background*/
+    background: url('../images/snow.gif')no-repeat center center fixed;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+}
 /*Sticky Footer*/
 body {
     font-family: 'Special Elite', cursive;
     display: flex;
     min-height: 100vh;
     flex-direction: column;
-
-
-    /*Holiday Themed Background*/
-    background-image: url('../images/winterWeather.gif');
-    background-size: cover;
-
 
     color: #000;
     text-shadow: -1px -1px 0 #FFF,
@@ -25,6 +26,7 @@ main {
     flex: 1 0 auto;
     font-family: 'Special Elite', cursive;
 }
+
 
 a.brand-logo,
 nav ul a {
@@ -97,4 +99,11 @@ span {
     height: 120%;
     padding-bottom: 20px;
     text-align: left;
+}
+
+.collapsible-body {
+
+    background-color: rgba(255, 255, 255, 0.7);
+    color: #000;
+    text-shadow:none;
 }

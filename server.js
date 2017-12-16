@@ -5,6 +5,8 @@ const mongoose = require('mongoose');
 const PORT = process.env.PORT || 3000;
 const router = express.Router();
 const path = require('path');
+const app = express();
+
 
 const csp = require('helmet-csp');
 
@@ -14,9 +16,10 @@ const cheerio = require('cheerio');
 
 // Require all models
 const db = require("./models");
+app.use(express.static("public"));
+
 
 // Initialize Express
-const app = express();
 app.use(router);
 
 // Configure middleware
@@ -24,9 +27,8 @@ app.use(router);
 // Use morgan logger for logging requests
 app.use(logger("dev"));
 // Use body-parser for handling form submissions
-app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.urlencoded({extended: false}));
 // Use express.static to serve the public folder as a static directory
-app.use(express.static("public"));
 // CSP error resolution
 app.use(csp({
     directives: {
@@ -38,7 +40,6 @@ app.use(csp({
     },
     browserSniff: false
 }));
-
 
 
 // Express-Handlebars
@@ -66,12 +67,12 @@ let scrapernews = {};
 // Includes the articles, headline, summary & URL
 
 // A GET route for scraping the website
-router.get("/scrape", function(req, res) {
+router.get("/scrape", function (req, res) {
     // First, we grab the body of the html with request
-    request.get("https://www.parents.com/holiday/christmas/traditions/great-holiday-stories-for-the-family", function(err, res, html) {
+    request.get("https://www.parents.com/holiday/christmas/traditions/great-holiday-stories-for-the-family", function (err, res, html) {
         const $ = cheerio.load(html);
         console.log(html);
-        $(".restOfTheSlide").each( function(i, element) {
+        $(".restOfTheSlide").each(function (i, element) {
             scrapernews.title = $(element).find("h2").text();
             scrapernews.link = $(element).children("div").find("a").attr("href").trim();
             scrapernews.summary = $(element).children("div").find("p").text();
@@ -79,16 +80,15 @@ router.get("/scrape", function(req, res) {
             console.log(scrapernews);
 
 
-
-                        // Create a new Holiday News "Article" using the `result` object built from scraping
+            // Create a new Holiday News "Article" using the `result` object built from scraping
             db.HolidayArticle
                 .create(scrapernews)
-                .then(function(dbHolidayArticle) {
+                .then(function (dbHolidayArticle) {
                     // If we were able to successfully scrape and save an Holiday News Article, send a message to the client
                     console.log(dbHolidayArticle);
                     res.send("active scrape in place");
                 })
-                .catch(function(err) {
+                .catch(function (err) {
                     console.log(err);
                 });
         });
@@ -125,15 +125,15 @@ router.get('/holidayarticles', function (req, res) {
 
 });
 
-router.get("/holidayarticles/:id", function(req, res) {
+router.get("/holidayarticles/:id", function (req, res) {
     db.HolidayArticle
-        .findOne({ _id: req.params.id })
+        .findOne({_id: req.params.id})
         // ..and populate all of the comments associated with it
         .populate("comments")
-        .then(function(dbHolidayArticle) {
+        .then(function (dbHolidayArticle) {
             res.json(dbHolidayArticle);
         })
-        .catch(function(err) {
+        .catch(function (err) {
             // If an error occurred, send it to the client
             res.json(err);
         });
@@ -141,22 +141,22 @@ router.get("/holidayarticles/:id", function(req, res) {
 
 
 // Route for saving/updating an Holiday News Article's associated Site Visitor Comments
-router.post("/holidayarticles/:id", function(req, res) {
+router.post("/holidayarticles/:id", function (req, res) {
     // Create a new note and pass the req.body to the entry
     db.Comment
         .create(req.body)
-        .then(function(dbComment) {
-            return db.HolidayArticle.findOneAndUpdate({ _id: req.params.id }, {$addToSet:{ comment: dbComment._id }}, { new: true });
+        .then(function (dbComment) {
+            return db.HolidayArticle.findOneAndUpdate({_id: req.params.id}, {$addToSet: {comment: dbComment._id}}, {new: true});
         })
-        .then(function(dbHolidayArticle) {
+        .then(function (dbHolidayArticle) {
             res.json(dbHolidayArticle);
         })
-        .catch(function(err) {
+        .catch(function (err) {
             res.json(err);
         });
 });
 
 // Launch App
-app.listen(PORT, function(){
+app.listen(PORT, function () {
     console.log('Running on port: ' + PORT);
 });

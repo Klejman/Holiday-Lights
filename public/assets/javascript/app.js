@@ -31,7 +31,7 @@ $(function () {
         }).then(function (data) {
             console.log(data);
         });
-        $("#comment_section").val("");
+        // $("#comment_section").val("");
     });
 
 
