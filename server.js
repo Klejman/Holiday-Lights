@@ -65,27 +65,33 @@ let scrapernews = {};
 
 // / Routes
 // Includes the articles, headline, summary & URL
+let createArticle = function(scrapernews){
+    db.HolidayArticle
+        .create(scrapernews)
+        .then(function (dbHolidayArticle) {
+            console.log(dbHolidayArticle);
+        })
+        .catch(function (err) {
+            console.log(err);
+        });
+};
 
 // A GET route for scraping the website
 router.get("/scrape", function (req, res) {
     // First, we grab the body of the html with request
     request.get("https://www.parents.com/holiday/christmas/traditions/great-holiday-stories-for-the-family", function (err, res, html) {
         const $ = cheerio.load(html);
-        console.log(html);
         $(".restOfTheSlide").each(function (i, element) {
             scrapernews.title = $(element).find("h2").text();
             scrapernews.link = $(element).children("div").find("a").attr("href").trim();
             scrapernews.summary = $(element).children("div").find("p").text();
 
-            console.log(scrapernews);
-
-
-            // Create a new Holiday News "Article" using the `result` object built from scraping
             db.HolidayArticle
-                .create(scrapernews)
+                .find({title:scrapernews.title}).count()
                 .then(function (dbHolidayArticle) {
-                    // If we were able to successfully scrape and save an Holiday News Article, send a message to the client
-                    console.log(dbHolidayArticle);
+                    if(count == 0) {
+                        createArticle(scrapernews);
+                    }
                     res.send("active scrape in place");
                 })
                 .catch(function (err) {
@@ -94,6 +100,8 @@ router.get("/scrape", function (req, res) {
         });
     });
 });
+
+
 
 
 router.get('/', function (req, res) {
@@ -128,25 +136,21 @@ router.get('/holidayarticles', function (req, res) {
 router.get("/holidayarticles/:id", function (req, res) {
     db.HolidayArticle
         .findOne({_id: req.params.id})
-        // ..and populate all of the comments associated with it
         .populate("comments")
         .then(function (dbHolidayArticle) {
             res.json(dbHolidayArticle);
         })
         .catch(function (err) {
-            // If an error occurred, send it to the client
             res.json(err);
         });
 });
 
 
-// Route for saving/updating an Holiday News Article's associated Site Visitor Comments
 router.post("/holidayarticles/:id", function (req, res) {
-    // Create a new note and pass the req.body to the entry
     db.Comment
         .create(req.body)
         .then(function (dbComment) {
-            return db.HolidayArticle.findOneAndUpdate({_id: req.params.id}, {$addToSet: {comment: dbComment._id}}, {new: true});
+            return db.HolidayArticle.findOneAndUpdate({_id: req.params.id}, {$addToSet: {comment: db.Comment._id}}, {new: true});
         })
         .then(function (dbHolidayArticle) {
             res.json(dbHolidayArticle);

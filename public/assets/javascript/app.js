@@ -1,4 +1,5 @@
-$(function () {
+$( document ).ready(function() {
+
 
     const baseURL = window.location.origin;
 
@@ -19,41 +20,17 @@ $(function () {
     });
 
 //Add Comment
-    $(".add-button").on("click", function () {
+    $(".add-submit btn").on("click", function (event) {
+        event.preventDefault();
         const HolidayArticleId = $(this).attr("data-id");
-        // Get Form Data by Id
-        const addInput = "form-add-" + HolidayArticleId;
-        const display = $('#' + addInput);
+        const commentByUser = $(".comment_section").$(this).attr("data-id");
+        //turn into an array
         $.ajax({
-            url: baseURL + '/add/comment/' + HolidayArticleId,
+            url: baseURL + '/holidayarticles/' + HolidayArticleId,
             type: 'POST',
-            data: display.serialize()
+            data:
         }).then(function (data) {
             console.log(data);
         });
-        // $("#comment_section").val("");
     });
-
-
-    $(document).on('click', '.remove-button', function () {
-        // Get _id of comment to be deleted
-        let thisId = $(this).attr("data-id");
-       $.ajax({
-            url: baseURL + '/remove/comment/' + thisId,
-            type: 'POST'
-        })
-            .then(function (data) {
-                console.log(data);
-                // Refresh the Window after the call is done
-                location.reload();
-            });
-
-        // Prevent Default
-        return false;
-
-    });
-})
-
-
-// Export Router to Server.js
-module.exports = router;
+});
