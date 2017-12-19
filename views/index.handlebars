@@ -16,29 +16,22 @@
                         <form id="form-add-{{_id}}">
                             <!-- Comment Input -->
                             <div class="row">
-                                <div class="input-field col s2"></div>
+                                <div class="col s2"></div>
                                 <div class="input-field col s8">
-                                    <textarea id="comment_section" class="materialize-textarea" data-id="{{_id}}"></textarea>
+                                    <textarea id="comment_section{{_id}}" class="materialize-textarea" data-id="{{_id}}"></textarea>
                                     <label for="comment_section"></label>
                                 </div>
                             </div>
-
-                            <!-- Submit Button -->
-                            <div class="row">
-                                <div class="input-field col s2">
-                                </div>
-                                <div class="input-field col s8 center">
-                                    <input class="add-submit btn" data-id="{{_id}}" type="submit"
+                            <div class="input-field col s2 center">
+                                    <input class="add-submit" data-id="{{_id}}" type="button"
                                            value="Submit">
-                                </div>
                             </div>
-
                         </form>
                     </div>
                 </li>
                 <li>
-                    <div class="collapsible-header"><i class="material-icons">ac_unit</i>VIEW COMMENTS</div>
-                    <div class="collapsible-body">
+                    <div class="collapsible-header" id="viewComments" data-id="{{_id}}"><i class="material-icons">ac_unit</i>VIEW COMMENTS</div>
+                    <div class="collapsible-body" id="commentsHere" data-id="{{_id}}">
                         {{#if comments}}
 
 

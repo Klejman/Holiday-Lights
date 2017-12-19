@@ -3,7 +3,7 @@ const exphbs = require('express-handlebars');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 const PORT = process.env.PORT || 3000;
-const router = express.Router();
+// const router = express.Router();
 const path = require('path');
 const app = express();
 
@@ -20,7 +20,7 @@ app.use(express.static("public"));
 
 
 // Initialize Express
-app.use(router);
+// app.use(router);
 
 // Configure middleware
 
@@ -30,16 +30,16 @@ app.use(logger("dev"));
 app.use(bodyParser.urlencoded({extended: false}));
 // Use express.static to serve the public folder as a static directory
 // CSP error resolution
-app.use(csp({
-    directives: {
-        fontSrc: ["'self'", 'https://fonts.gstatic.com/'],
-        defaultSrc: ["'self'"],
-        scriptSrc: ["'self'"],
-        styleSrc: ["'self'"],
-        imgSrc: ["'self'"]
-    },
-    browserSniff: false
-}));
+// app.use(csp({
+//     directives: {
+//         fontSrc: ["'self'", 'https://fonts.gstatic.com/'],
+//         defaultSrc: ["'self'"],
+//         scriptSrc: ["'self'"],
+//         styleSrc: ["'self'"],
+//         imgSrc: ["'self'"]
+//     },
+//     browserSniff: false
+// }));
 
 
 // Express-Handlebars
@@ -50,12 +50,17 @@ app.engine('handlebars', exphbs({defaultLayout: 'main'}));
 app.set('view engine', 'handlebars');
 
 
-// Set mongoose to leverage built in JavaScript ES6 Promises
-// Connect to the Mongo DB
-mongoose.Promise = Promise;
-mongoose.connect("mongodb://localhost/scrapenews", {
-    useMongoClient: true
-});
+
+// if (process.env.MONGODB_URI) {
+//     mongoose.connect(process.env.MONGODB_URI);
+// }
+// else {
+    mongoose.Promise = Promise;
+    mongoose.connect("mongodb://localhost/scrapenews", {
+        useMongoClient: true
+    });
+// }
+
 
 // store scraped content
 let scrapernews = {};
@@ -65,7 +70,7 @@ let scrapernews = {};
 
 // / Routes
 // Includes the articles, headline, summary & URL
-let createArticle = function(scrapernews){
+let createArticle = function (scrapernews) {
     db.HolidayArticle
         .create(scrapernews)
         .then(function (dbHolidayArticle) {
@@ -77,7 +82,7 @@ let createArticle = function(scrapernews){
 };
 
 // A GET route for scraping the website
-router.get("/scrape", function (req, res) {
+app.get("/scrape", function (req, res) {
     // First, we grab the body of the html with request
     request.get("https://www.parents.com/holiday/christmas/traditions/great-holiday-stories-for-the-family", function (err, res, html) {
         const $ = cheerio.load(html);
@@ -87,27 +92,21 @@ router.get("/scrape", function (req, res) {
             scrapernews.summary = $(element).children("div").find("p").text();
 
             db.HolidayArticle
-                .find({title:scrapernews.title}).count()
+                .find({title: scrapernews.title}).count()
                 .then(function (dbHolidayArticle) {
-                    if(count == 0) {
+                    if (count == 0) {
                         createArticle(scrapernews);
+                        res.redirect('/');
                     }
-                    res.send("active scrape in place");
-                })
-                .catch(function (err) {
-                    console.log(err);
                 });
         });
     });
 });
 
 
-
-
-router.get('/', function (req, res) {
+app.get('/', function (req, res) {
     db.HolidayArticle.find({})
         .then(function (holidayarticles) {
-            // res.json(articles);
             console.log(holidayarticles);
             res.render("index", {scrapernews: holidayarticles});
         }).catch(function (err) {
@@ -117,46 +116,59 @@ router.get('/', function (req, res) {
     })
 });
 
-router.get('/holidayarticles', function (req, res) {
+app.get("/holidayarticles/:id", function (req, res) {
+    db.Article.findOne({_id: req.params.id})
+        .populate("comment")
+        .then(function (holidayarticleComment) {
+            console.log(holidayarticleComment);
+            res.json(holidayarticleComment)
+        }).catch(function (err) {
+        if (err) {
+            console.log(err);
+        }
+    });
+});
 
-    db.HolidayArticle.find().sort({_id: -1})
+
+app.get('/holidayarticles/:id', function (req, res) {
+
+    db.HolidayArticle.findOne({_id: req.params.id}).sort({_id: -1})
         .populate('comments')
-        .exec(function (err, doc) {
-            if (err) {
-                console.log(err);
-            }
-            else {
-                const hbsObject = {holidayarticles: doc};
-                res.render('index', hbsObject);
-            }
-        });
+        .then(function (holidayarticleComment) {
+            console.log(holidayarticleComment);
+            res.json(holidayarticleComment)
+        }).catch(function (err) {
+        if (err) {
+            console.log(err);
+        }
+        // .exec(function (err, doc) {
+        //     if (err) {
+        //         console.log(err);
+        //     }
+        //     else {
+        //         const hbsObject = {holidayarticles: doc};
+        //         res.render('index', hbsObject);
+        //     }
+        // });
 
-});
-
-router.get("/holidayarticles/:id", function (req, res) {
-    db.HolidayArticle
-        .findOne({_id: req.params.id})
-        .populate("comments")
-        .then(function (dbHolidayArticle) {
-            res.json(dbHolidayArticle);
-        })
-        .catch(function (err) {
-            res.json(err);
-        });
+    });
 });
 
 
-router.post("/holidayarticles/:id", function (req, res) {
+app.post("/holidayarticles/:id", function (req, res) {
+    console.log(req, res);
     db.Comment
         .create(req.body)
         .then(function (dbComment) {
-            return db.HolidayArticle.findOneAndUpdate({_id: req.params.id}, {$addToSet: {comment: db.Comment._id}}, {new: true});
+
+            return db.HolidayArticle.findOneAndUpdate({_id: req.params.id}, {comments: dbComment._id}, {new: true});
+            console.log(`${dbComment._id}`);
         })
         .then(function (dbHolidayArticle) {
             res.json(dbHolidayArticle);
         })
         .catch(function (err) {
-            res.json(err);
+            console.log(err);
         });
 });
 

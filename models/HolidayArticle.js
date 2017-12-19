@@ -27,7 +27,7 @@ const HolidayArticleSchema = new Schema({
 
 });
 
-const HolidayArticle = mongoose.model("HolidayArticle", HolidayArticleSchema, "holidayarticles");
+const HolidayArticle = mongoose.model("HolidayArticle", HolidayArticleSchema);
 
 // Export the Model
 module.exports = HolidayArticle;
