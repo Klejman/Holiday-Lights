@@ -8,7 +8,7 @@ const path = require('path');
 const app = express();
 
 
-const csp = require('helmet-csp');
+// const csp = require('helmet-csp');
 
 const logger = require('morgan');
 const request = require('request');
@@ -117,7 +117,7 @@ app.get('/', function (req, res) {
 });
 
 app.get("/holidayarticles/:id", function (req, res) {
-    db.Article.findOne({_id: req.params.id})
+    db.HolidayArticle.findOne({_id: req.params.id})
         .populate("comment")
         .then(function (holidayarticleComment) {
             console.log(holidayarticleComment);
