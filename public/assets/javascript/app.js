@@ -35,13 +35,14 @@ $( document ).ready(function() {
 
         });
     });
-    $('#commentsHere').on("click",  function () {
+    $('.viewComments').on("click",  function () {
 
         let commentId = $(this).attr("data-comments");
-        $("#" + commentId).empty();
+        // $(this).empty();
         console.log("this is commentId");
         console.log(commentId);
-        console.log(`/holidayarticles/${$(this).attr("data-id")}`);
+        // console.log(`/holidayarticles/${$(this).attr("data-id")}`);
+        debugger
         $.ajax({
             method: "GET",
             url: `/holidayarticles/${$(this).attr("data-id")}`
