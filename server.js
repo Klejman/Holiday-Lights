@@ -117,8 +117,8 @@ app.get('/', function (req, res) {
 });
 
 app.get("/holidayarticles/:id", function (req, res) {
-    db.HolidayArticle.findOne({_id: req.params.id})
-        .populate("comment")
+    db.Comment.findOne({_id: req.params.id})
+        // .populate("comment")
         .then(function (holidayarticleComment) {
             console.log(holidayarticleComment);
             res.json(holidayarticleComment)
@@ -129,30 +129,30 @@ app.get("/holidayarticles/:id", function (req, res) {
     });
 });
 
-
-app.get('/holidayarticles/:id', function (req, res) {
-
-    db.HolidayArticle.findOne({_id: req.params.id}).sort({_id: -1})
-        .populate('comments')
-        .then(function (holidayarticleComment) {
-            console.log(holidayarticleComment);
-            res.json(holidayarticleComment)
-        }).catch(function (err) {
-        if (err) {
-            console.log(err);
-        }
-        // .exec(function (err, doc) {
-        //     if (err) {
-        //         console.log(err);
-        //     }
-        //     else {
-        //         const hbsObject = {holidayarticles: doc};
-        //         res.render('index', hbsObject);
-        //     }
-        // });
-
-    });
-});
+//
+// app.get('/holidayarticles/:id', function (req, res) {
+//
+//     db.HolidayArticle.findOne({_id: req.params.id}).sort({_id: -1})
+//         .populate('comments')
+//         .then(function (holidayarticleComment) {
+//             console.log(holidayarticleComment);
+//             res.json(holidayarticleComment)
+//         }).catch(function (err) {
+//         if (err) {
+//             console.log(err);
+//         }
+//         // .exec(function (err, doc) {
+//         //     if (err) {
+//         //         console.log(err);
+//         //     }
+//         //     else {
+//         //         const hbsObject = {holidayarticles: doc};
+//         //         res.render('index', hbsObject);
+//         //     }
+//         // });
+//
+//     });
+// });
 
 
 app.post("/holidayarticles/:id", function (req, res) {
@@ -160,12 +160,9 @@ app.post("/holidayarticles/:id", function (req, res) {
     db.Comment
         .create(req.body)
         .then(function (dbComment) {
-
-            return db.HolidayArticle.findOneAndUpdate({_id: req.params.id}, {comments: dbComment._id}, {new: true});
+            console.log(dbComment);
             console.log(`${dbComment._id}`);
-        })
-        .then(function (dbHolidayArticle) {
-            res.json(dbHolidayArticle);
+            res.json(dbComment)
         })
         .catch(function (err) {
             console.log(err);

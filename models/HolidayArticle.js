@@ -20,11 +20,6 @@ const HolidayArticleSchema = new Schema({
         required: true
     },
 
-    comments: [{
-        type: Schema.Types.ObjectId,
-        ref: "Comment"
-    }]
-
 });
 
 const HolidayArticle = mongoose.model("HolidayArticle", HolidayArticleSchema);

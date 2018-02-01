@@ -25,10 +25,14 @@ $( document ).ready(function() {
         const HolidayArticleId = $(this).attr("data-id");
         console.log(`this worked too ${HolidayArticleId}`);
         //turn into an array
+        console.log($(`#comment_section${HolidayArticleId}`).val());
         $.ajax({
             url: baseURL + '/holidayarticles/' + HolidayArticleId,
             type: 'POST',
-            data: {comment: $(`comment_section${HolidayArticleId}`).val()}
+            data: {
+                comment: $(`#comment_section${HolidayArticleId}`).val(),
+                _id: HolidayArticleId
+            }
         }).then(function (data) {
             console.log('this worked from server', data);
             $(`comment_section${HolidayArticleId}`).val()
@@ -42,15 +46,16 @@ $( document ).ready(function() {
         console.log("this is commentId");
         console.log(commentId);
         // console.log(`/holidayarticles/${$(this).attr("data-id")}`);
-        debugger
+
         $.ajax({
             method: "GET",
             url: `/holidayarticles/${$(this).attr("data-id")}`
         }).then(function (data) {
+            debugger
             // console.log(data);
             console.log("Server: ", data);
             // for (let i = 0; i < data.comment.length; i++) {
-            $(`*[data-comments=${data._id}]`).addClass("commentContainer").append(`<div>${data.summary}</div>`);
+            $(`*[data-comments=${data._id}]`).addClass("commentContainer").append(`<div>${data.comment}</div>`);
             // }
         })
     });
