@@ -83,22 +83,20 @@ let createArticle = function (scrapernews) {
 
 // A GET route for scraping the website
 app.get("/scrape", function (req, res) {
+    console.log('sccrappe');
     // First, we grab the body of the html with request
     request.get("https://www.parents.com/holiday/christmas/traditions/great-holiday-stories-for-the-family", function (err, res, html) {
         const $ = cheerio.load(html);
         $(".restOfTheSlide").each(function (i, element) {
+            console.log(element);
             scrapernews.title = $(element).find("h2").text();
             scrapernews.link = $(element).children("div").find("a").attr("href").trim();
             scrapernews.summary = $(element).children("div").find("p").text();
 
-            db.HolidayArticle
-                .find({title: scrapernews.title}).count()
-                .then(function (dbHolidayArticle) {
-                    if (count == 0) {
-                        createArticle(scrapernews);
-                        res.redirect('/');
-                    }
-                });
+            let count =  db.HolidayArticle.find({title: scrapernews.title}).count();
+            if (count != 0) {
+                createArticle(scrapernews);
+            }
         });
     });
 });
@@ -117,7 +115,7 @@ app.get('/', function (req, res) {
 });
 
 app.get("/holidayarticles/:id", function (req, res) {
-    db.Comment.findOne({_id: req.params.id})
+    db.Comment.find({_HolidayArticleId: req.params.id})
         // .populate("comment")
         .then(function (holidayarticleComment) {
             console.log(holidayarticleComment);

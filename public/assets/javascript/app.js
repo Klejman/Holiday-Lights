@@ -9,7 +9,7 @@ $( document ).ready(function() {
             method: "GET",
             url: "/scrape"
         }).then(function (data) {
-            console.lgo(data);
+            console.log(data);
             $.ajax({
                 method: "GET",
                 url: "/"
@@ -31,7 +31,7 @@ $( document ).ready(function() {
             type: 'POST',
             data: {
                 comment: $(`#comment_section${HolidayArticleId}`).val(),
-                _id: HolidayArticleId
+                _HolidayArticleId: HolidayArticleId
             }
         }).then(function (data) {
             console.log('this worked from server', data);
@@ -51,12 +51,11 @@ $( document ).ready(function() {
             method: "GET",
             url: `/holidayarticles/${$(this).attr("data-id")}`
         }).then(function (data) {
-            debugger
             // console.log(data);
             console.log("Server: ", data);
-            // for (let i = 0; i < data.comment.length; i++) {
-            $(`*[data-comments=${data._id}]`).addClass("commentContainer").append(`<div>${data.comment}</div>`);
-            // }
+            for (let i = 0; i < data.length; i++) {
+                $(`#comment_container${data[i]._HolidayArticleId}`).append(`<div>${data[i].comment}</div>`);
+            }
         })
     });
 });
